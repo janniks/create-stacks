@@ -1,0 +1,20 @@
+name: Merge upstream branches
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Merge upstream
+        run: |
+          git pull --unshallow
+
+          git remote add upstream https://github.com/hirosystems/create-stacks.git
+          git fetch upstream
+
+          git checkout main
+          git merge --no-edit upstream/main
+          git push origin main
